@@ -7,10 +7,23 @@ function(modular_variable)
 	set(name ${ARG1})
 	set(type ${V_TYPE})
 	set(init ${V_INIT})
-	set(output ${modvardir}/${V_NAME}.h)
+	foreach(suffix IN h;internal.h;c)
+		set(output ${modvardir}/${V_NAME}.${suffix})
+		file(LOCK ${output}.temp)
+		foreach(module IN LISTS V_MODULES)
+			set(input ${CMAKE_SOURCE_DIR}/modvar/${module}.${suffix}.in)
+			if(EXISTS ${input})
+				configure_file(${input} ${output}.temp1)
+				file(APPEND ${output}.temp file(READ ${OUTPUT}.temp1))
+			endif()
+		endforeach(module)
+		file(RENAME ${output}.temp ${output})
+		file(UNLOCK ${output}.temp)
+	endforeach(suffix)
+	set(output ${modvardir}/${V_NAME}.internal.h)
 	file(LOCK ${output}.temp)
 	foreach(module IN LISTS V_MODULES)
-		set(input ${CMAKE_SOURCE_DIR}/modvar/${module}.h.in)
+		set(input ${CMAKE_SOURCE_DIR}/modvar/${module}.internal.h.in)
 		if(EXISTS ${input})
 			configure_file(${input} ${output}.temp1)
 			file(APPEND ${output}.temp file(READ ${OUTPUT}.temp1))
@@ -18,11 +31,5 @@ function(modular_variable)
 	endforeach(module)
 	file(RENAME ${output}.temp ${output})
 	file(UNLOCK ${output}.temp)
+	
 endfunction(modular_variable)
-
-# test
-
-modular_variable(test
-	TYPE bool
-	INIT false
-	MODULES foo bar)

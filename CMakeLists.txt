@@ -10,4 +10,4 @@ modular_variable(testvar
 	MODULES foo bar)
 
 
-add_executable(test test.c testvar.c)
+add_executable(test test.c modvar/testvar.c)

@@ -1,1 +1,1 @@
-foo @name@
+#define foo @name@

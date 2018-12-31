@@ -32,7 +32,6 @@ function(modular_variable)
 	set(type "${V_TYPE}")
 	set(init "${V_INIT}")
 
-	set(sources)
 	if(DEFINED V_DEPENDERS)
 		set(DEP)
 	endif()
@@ -59,13 +58,28 @@ function(modular_variable)
 				-P build_modular_variable.cmake
 				DEPENDS "${inputs}")
 		# then... depend on ${output}?
-		if("${suffix}" STREQUAL "c")
+		if("${suffix}" STREQUAL "c")				
 			list(APPEND sources "${output}")
 			# propagate to parent scope
 			# so we can actually use the generated sources in our projects :p
+		else()
+			list(APPEND headers "${output}")
 		endif()
 	endforeach(suffix)
-	if(NOT "${sources}" STREQUAL "")
+	if(DEFINED sources)
 		set(${cmakename}_MODVAR_SOURCES "${sources}" PARENT_SCOPE)
 	endif()
+	if(DEFINED headers)
+		set(${cmakename}_MODVAR_HEADERS "${headers}" PARENT_SCOPE)
+	endif()
 endfunction(modular_variable)
+
+function(modvar_sources_includes target)
+	cmake_parse_arguments(PARSE_ARGV 1 V
+		"" "" "HEADERS")
+	endforeach(suffix)
+
+	get_source_file_property(OLD "${target}" OBJECT_DEPENDS)
+	set(NEW ${OLD} ${V_HEADERS})
+	set_source_files_properties("${target}" OBJECT_DEPENDS "${NEW}")
+endfunction(modvar_sources_includes)

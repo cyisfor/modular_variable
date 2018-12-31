@@ -46,11 +46,11 @@ function(modular_variable)
 			endif()
 		endforeach(module)
 		message(STATUS ACC ${output})
+		message(STATUS ${inputs})
 		add_custom_command(
 			OUTPUT "${output}"
-			COMMAND cmake
-			  "-Dmodules=${V_MODULES}"
-				"-Dinputs=${inputs}"
+			COMMAND "${CMAKE_COMMAND}"
+			  "-Dmodules='${V_MODULES}'"
 				"-Dname=${name}"
 				"-Dfilename=${filename}"
 				"-Dcmakename=${cmakename}"

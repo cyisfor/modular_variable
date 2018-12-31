@@ -45,8 +45,6 @@ function(modular_variable)
 				list(APPEND inputs "${input}")
 			endif()
 		endforeach(module)
-		message(STATUS ACC ${output})
-		message(STATUS ${inputs})
 		add_custom_command(
 			OUTPUT "${output}"
 			COMMAND "${CMAKE_COMMAND}"
@@ -55,6 +53,7 @@ function(modular_variable)
 				"-Dfilename=${filename}"
 				"-Dcmakename=${cmakename}"
 				"-Dtype=${type}"
+				"-Dinit=${init}"
 				"-Dsuffix=${suffix}"
 				"-Doutput=${output}"
 				"-Dmodvar=${CMAKE_CURRENT_SOURCE_DIR}/modvar"
@@ -80,6 +79,9 @@ endfunction(modular_variable)
 function(modvar_source_includes target)
 	cmake_parse_arguments(PARSE_ARGV 1 V "" "" "HEADERS")
 	get_source_file_property(OLD "${target}" OBJECT_DEPENDS)
+	if("${OLD}" STREQUAL "NOTFOUND")
+		set(OLD)
+	endif()
 	set(NEW ${OLD} ${V_HEADERS})
 	set_source_files_properties("${target}" OBJECT_DEPENDS "${NEW}")
 endfunction(modvar_source_includes)

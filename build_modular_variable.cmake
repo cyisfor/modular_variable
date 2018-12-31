@@ -1,7 +1,7 @@
 # must define output, modules, modvar, module, suffix
 # as well as name, cmakename, filename, type, init, for configure_file()
+
 file(LOCK "${output}.lock")
-message(STATUS Build: " ${modules}")
 foreach(module IN LISTS modules)
 	set(input "${modvar}/${module}.${suffix}.in")
 	if(EXISTS "${input}")
@@ -11,9 +11,6 @@ foreach(module IN LISTS modules)
 			file(APPEND "${output}.temp" "${contents}")
 		else()
 			set(dirty true)
-			if(NOT DEFINED dirty)
-				message(ERROR "wat")
-			endif()
 			file(WRITE "${output}.temp" "${contents}")
 		endif()
 	endif()

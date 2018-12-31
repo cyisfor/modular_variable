@@ -1,6 +1,13 @@
 # modular_variable(name stuff) creates ${name}_MODVAR_SOURCES which need to
 # be added as sources to use that variable, if they aren't an empty list.
 
+# specify VAR name for the C variable to be a different name than the cmake
+# ${name}_MODVAR_SOURCES
+# specify FILE name for the generated file to be a different name than the
+# cmake name or the C variable name.
+# if FILE is unspecified, it defaults to the C variable name.
+# if the C variable name is unspecified, it defaults to the cmake name
+
 set(MODVARDIR ${CMAKE_CURRENT_BINARY_DIR}/modvar)
 include_directories(${MODVARDIR})
 # for clarity in including the headers:
@@ -20,7 +27,6 @@ function(modular_variable)
 	if(DEFINED V_FILE)
 		set(filename "${V_FILE}")
 	else()
-		message(ERROR "Oh nooooo ${V_FILE}")
 		set(filename "${name}")
 	endif()
 	set(type "${V_TYPE}")

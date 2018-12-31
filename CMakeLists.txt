@@ -11,6 +11,7 @@ modular_variable(TESTDERP
   VAR testvar
 	TYPE int
 	INIT 23
+  DEPENDERS test.c
 	MODULES foo bar)
 
 add_executable(test test.c ${TESTDERP_MODVAR_SOURCES})

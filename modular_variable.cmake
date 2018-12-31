@@ -33,10 +33,14 @@ function(modular_variable)
 	set(init "${V_INIT}")
 
 	set(sources "")
+	if(DEFINED V_DEPENDERS)
+		set(DEP "")
+	endif()
+
 	foreach(suffix IN ITEMS h internal.h c)
-		set(output "${MODVARDIR}/${filename}.${suffix}")
-		file(LOCK "${output}.lock")
+		set(output "${MODVARDIR}/${filename}.${suffix}")		
 		set(dirty false)
+		file(LOCK "${output}.lock")
 #		debugvars()
 		foreach(module IN LISTS V_MODULES)
 			set(input "${CMAKE_CURRENT_SOURCE_DIR}/modvar/${module}.${suffix}.in")
@@ -59,9 +63,21 @@ function(modular_variable)
 				# propagate to parent scope
 				# so we can actually use the generated sources in our projects :p
 				set(${cmakename}_MODVAR_SOURCES "${sources}" PARENT_SCOPE)
+			elseif(DEFINED V_DEPENDERS)
+				list(APPEND DEP "${output}")
 			endif()
 		endif()
 		file(LOCK "${output}.lock" RELEASE)
 		file(REMOVE "${output}.lock")
 	endforeach(suffix)
+
+	if(DEFINED V_DEPENDERS)
+		# have to manually specify dependencies
+		# since cpp can't #include a file that hasn't been generated w/out error
+		foreach(target IN LISTS V_DEPENDERS)
+			get_source_file_property(OLD "${target}" OBJECT_DEPENDS)
+			set(NEW ${OLD} ${DEP})
+			set_source_files_properties("${target}" OBJECT_DEPENDS "${NEW}")
+		endforeach(target)
+	endif()
 endfunction(modular_variable)

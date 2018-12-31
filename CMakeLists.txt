@@ -7,6 +7,7 @@ include(modular_variable.cmake)
 # test
 
 modular_variable(TESTDERP
+  FILE testfile
   VAR testvar
 	TYPE int
 	INIT 23

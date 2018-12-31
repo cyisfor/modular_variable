@@ -40,13 +40,16 @@ function(modular_variable)
 		set(output "${MODVARDIR}/${filename}.${suffix}")
 		set(inputs)
 		foreach(module IN LISTS V_MODULES)
-			list(APPEND inputs "${CMAKE_CURRENT_SOURCE_DIR}/modvar/${module}.${suffix}.in")
+			set(input "${CMAKE_CURRENT_SOURCE_DIR}/modvar/${module}.${suffix}.in")
+			if(EXISTS "${input}")
+				list(APPEND inputs "${input}")
+			endif()
 		endforeach(module)
-
+		message(STATUS ACC ${output})
 		add_custom_command(
 			OUTPUT "${output}"
 			COMMAND cmake
-			  "-DV_MODULES=${V_MODULES}"
+			  "-Dmodules=${V_MODULES}"
 				"-Dinputs=${inputs}"
 				"-Dname=${name}"
 				"-Dfilename=${filename}"
@@ -74,12 +77,9 @@ function(modular_variable)
 	endif()
 endfunction(modular_variable)
 
-function(modvar_sources_includes target)
-	cmake_parse_arguments(PARSE_ARGV 1 V
-		"" "" "HEADERS")
-	endforeach(suffix)
-
+function(modvar_source_includes target)
+	cmake_parse_arguments(PARSE_ARGV 1 V "" "" "HEADERS")
 	get_source_file_property(OLD "${target}" OBJECT_DEPENDS)
 	set(NEW ${OLD} ${V_HEADERS})
 	set_source_files_properties("${target}" OBJECT_DEPENDS "${NEW}")
-endfunction(modvar_sources_includes)
+endfunction(modvar_source_includes)

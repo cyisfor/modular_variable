@@ -1,8 +1,8 @@
-# must define output, V_MODULES, modvar, module, suffix
+# must define output, modules, modvar, module, suffix
 # as well as name, cmakename, filename, type, init, for configure_file()
 file(LOCK "${output}.lock")
 set(dirty false)
-foreach(module IN LISTS V_MODULES)
+foreach(module IN LISTS modules)
 	set(input "${modvar}/${module}.${suffix}.in")
 	if(EXISTS "${input}")
 		configure_file("${input}" "${input}.temp")

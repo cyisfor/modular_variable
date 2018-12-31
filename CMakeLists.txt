@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.13)
 
+message(STATUS "This is only an example of how to use this! Just include(modular_variable/modular_variable.cmake)!")
+
 include(modular_variable.cmake)
 
 # test
 
 modular_variable(testvar
-	TYPE bool
-	INIT false
+	TYPE int
+	INIT 23
 	MODULES foo bar)
 
 

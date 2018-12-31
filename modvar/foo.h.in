@@ -1,1 +1,3 @@
 #define foo @name@
+
+#define foobar "name @name@ module @module@ type @type@ init @init@"

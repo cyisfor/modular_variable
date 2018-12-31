@@ -1,2 +1,2 @@
-#include "@name@.internal.h"
+#include "@filename@.internal.h"
 @type@ bar = @init@;

@@ -1,5 +1,5 @@
-#include "modvar/testvar.h"
-#include "modvar/testvar.internal.h"
+#include "modvar/testfile.h"
+#include "modvar/testfile.internal.h"
 #include <stdio.h>
 
 int testvar = 3;

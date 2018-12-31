@@ -6,9 +6,10 @@ include(modular_variable.cmake)
 
 # test
 
-modular_variable(testvar
+modular_variable(TESTDERP
+  VAR testvar
 	TYPE int
 	INIT 23
 	MODULES foo bar)
 
-add_executable(test test.c ${MODULAR_VARIABLE_SOURCES})
+add_executable(test test.c ${TESTDERP_MODVAR_SOURCES})

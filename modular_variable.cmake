@@ -16,6 +16,7 @@ function(modular_variable)
 		set(var "${V_VAR}")
 	else()
 		set(var "${name}")
+	endif()
 	set(type "${V_TYPE}")
 	set(init "${V_INIT}")
 

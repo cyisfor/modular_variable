@@ -8,6 +8,7 @@
 # if FILE is unspecified, it defaults to the C variable name.
 # if the C variable name is unspecified, it defaults to the cmake name
 
+message(ERROR uhhh ${CMAKE_CURRENT_LIST_FILE})
 set(MODVARDIR ${CMAKE_CURRENT_BINARY_DIR}/modvar)
 include_directories(${MODVARDIR})
 # for clarity in including the headers:

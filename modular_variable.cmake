@@ -8,13 +8,15 @@
 # if FILE is unspecified, it defaults to the C variable name.
 # if the C variable name is unspecified, it defaults to the cmake name
 
-set(MODVARDIR ${CMAKE_CURRENT_BINARY_DIR}/modvar)
-include_directories(${MODVARDIR})
+set(MODULAR_VARIABLE_INCLUDE ${CMAKE_CURRENT_BINARY_DIR}/modvar)
+# note, this won't help for projects that included the one using this as a subdirectory:
+include_directories(${MODULAR_VARIABLE_INCLUDE})
 # for clarity in including the headers:
-set(MODVARDIR ${MODVARDIR}/modvar)
+set(MODVARDEST ${MODULAR_VARIABLE_INCLUDE}/modvar)
 # i.e. #include "modvar/something.h"
-file(MAKE_DIRECTORY ${MODVARDIR})
+file(MAKE_DIRECTORY ${MODVARDEST})
 
+# CMAKE_CURRENT_LIST_DIR will change when modular_variable is called
 set(modvarlistdir ${CMAKE_CURRENT_LIST_DIR})
 
 function(modular_variable)
@@ -35,7 +37,7 @@ function(modular_variable)
 	set(init "${V_INIT}")
 
 	foreach(suffix IN ITEMS h internal.h c)
-		set(output "${MODVARDIR}/${filename}.${suffix}")
+		set(output "${MODVARDEST}/${filename}.${suffix}")
 		set(inputs)
 		foreach(module IN LISTS V_MODULES)
 			set(input "${CMAKE_CURRENT_SOURCE_DIR}/modvar/${module}.${suffix}.in")

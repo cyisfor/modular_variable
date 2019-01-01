@@ -16,3 +16,4 @@ modular_variable(TESTDERP
 modvar_source_includes(test.c HEADERS "${TESTDERP_MODVAR_HEADERS}")
 
 add_executable(test test.c ${TESTDERP_MODVAR_SOURCES})
+add_dependencies(test MODVAR_GENERATE_TESTDERP)

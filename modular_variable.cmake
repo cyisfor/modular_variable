@@ -34,10 +34,6 @@ function(modular_variable)
 	set(type "${V_TYPE}")
 	set(init "${V_INIT}")
 
-	if(DEFINED V_DEPENDERS)
-		set(DEP)
-	endif()
-
 	foreach(suffix IN ITEMS h internal.h c)
 		set(output "${MODVARDIR}/${filename}.${suffix}")
 		set(inputs)
@@ -61,6 +57,7 @@ function(modular_variable)
 				"-Dmodvar=${CMAKE_CURRENT_SOURCE_DIR}/modvar"
 				-P ${modvarlistdir}/build_modular_variable.cmake
 				DEPENDS "${inputs}")
+		list(APPEND targetdeps "${output}")
 		# then... depend on ${output}?
 		if("${suffix}" STREQUAL "c")				
 			list(APPEND sources "${output}")
@@ -76,6 +73,8 @@ function(modular_variable)
 	if(DEFINED headers)
 		set(${cmakename}_MODVAR_HEADERS "${headers}" PARENT_SCOPE)
 	endif()
+	add_custom_target("MODVAR_GENERATE_${cmakename}"
+		DEPENDS "${targetdeps}")
 endfunction(modular_variable)
 
 function(modvar_source_includes target)

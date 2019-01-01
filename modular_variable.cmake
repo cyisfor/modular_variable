@@ -15,6 +15,8 @@ set(MODVARDIR ${MODVARDIR}/modvar)
 # i.e. #include "modvar/something.h"
 file(MAKE_DIRECTORY ${MODVARDIR})
 
+set(modvarlistdir ${CMAKE_CURRENT_LIST_DIR})
+
 function(modular_variable)
 	cmake_parse_arguments(PARSE_ARGV 1 V
 		"" "TYPE;INIT;VAR;FILE" "MODULES")
@@ -57,7 +59,7 @@ function(modular_variable)
 				"-Dsuffix=${suffix}"
 				"-Doutput=${output}"
 				"-Dmodvar=${CMAKE_CURRENT_SOURCE_DIR}/modvar"
-				-P ${CMAKE_CURRENT_LIST_DIR}/build_modular_variable.cmake
+				-P ${modvarlistdir}/build_modular_variable.cmake
 				DEPENDS "${inputs}")
 		# then... depend on ${output}?
 		if("${suffix}" STREQUAL "c")				

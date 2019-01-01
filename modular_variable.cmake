@@ -8,7 +8,6 @@
 # if FILE is unspecified, it defaults to the C variable name.
 # if the C variable name is unspecified, it defaults to the cmake name
 
-message(ERROR uhhh ${CMAKE_CURRENT_LIST_DIR})
 set(MODVARDIR ${CMAKE_CURRENT_BINARY_DIR}/modvar)
 include_directories(${MODVARDIR})
 # for clarity in including the headers:
@@ -58,7 +57,7 @@ function(modular_variable)
 				"-Dsuffix=${suffix}"
 				"-Doutput=${output}"
 				"-Dmodvar=${CMAKE_CURRENT_SOURCE_DIR}/modvar"
-				-P "${CMAKE_CURRENT_LIST_DIR}/build_modular_variable.cmake"
+				-P ${CMAKE_CURRENT_LIST_DIR}/build_modular_variable.cmake
 				DEPENDS "${inputs}")
 		# then... depend on ${output}?
 		if("${suffix}" STREQUAL "c")				

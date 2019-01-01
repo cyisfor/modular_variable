@@ -57,7 +57,7 @@ function(modular_variable)
 				"-Dsuffix=${suffix}"
 				"-Doutput=${output}"
 				"-Dmodvar=${CMAKE_CURRENT_SOURCE_DIR}/modvar"
-				-P build_modular_variable.cmake
+				-P "${CMAKE_CURRENT_LIST_DIR}/build_modular_variable.cmake"
 				DEPENDS "${inputs}")
 		# then... depend on ${output}?
 		if("${suffix}" STREQUAL "c")				
